@@ -1,0 +1,62 @@
+from flask import Flask , request, jsonify 
+from models.task import Task
+
+app = Flask(__name__)
+
+#CRUD - Create, Read, Update, Delete
+
+tasks = []
+task_id_control = 1
+
+@app.route("/tasks", methods=["POST"])
+def create_task():
+    global task_id_control
+    data = request.get_json()
+
+    id = task_id_control
+    title = data.get("title")
+    description = data.get("description")
+    completed = data.get("completed", False)
+
+    new_task = Task(task_id_control, title, description, completed)
+    task_id_control += 1
+    tasks.append(new_task)
+    return jsonify(new_task.to_dict()), 201
+
+@app.route("/tasks", methods=["GET"])
+def get_tasks():
+    return jsonify([task.to_dict() for task in tasks])
+
+@app.route("/tasks/<int:task_id>", methods=["GET"])
+def get_task(task_id):
+    task = next((task for task in tasks if task.id == task_id), None)
+    if task is None:
+        return jsonify({"error": "Task not found"}), 404
+    return jsonify(task.to_dict()), 200
+
+@app.route("/tasks/<int:task_id>", methods=["PUT"])
+def update_task(task_id):
+    data = request.get_json()
+    task = next((task for task in tasks if task.id == task_id), None)
+    if task is None:
+        return jsonify({"error": "Task not found"}), 404
+    task.title = data.get("title", task.title)
+    task.description = data.get("description", task.description)
+    task.completed = data.get("completed", task.completed)
+    return jsonify(task.to_dict()), 200
+
+@app.route("/tasks/<int:task_id>", methods=["DELETE"])
+def delete_task(task_id):
+    task = next((task for task in tasks if task.id == task_id), None)
+    if task is None:
+        return jsonify({"error": "Task not found"}), 404
+    tasks.remove(task)
+    return jsonify({"message": "Task deleted successfully"}), 200
+
+
+
+
+if __name__ == "__main__":
+    app.run(debug=True)     
+
+
