@@ -12,9 +12,10 @@ API REST simples para gerenciamento de tarefas (Tasks) desenvolvida com Flask. E
 ## 📦 Tecnologias Utilizadas
 
 - **Flask** 3.0.0 - Framework web Python
-- **Flask-Cors** 4.0.0 - Suporte a CORS
 - **Werkzeug** 3.0.1 - Servidor WSGI
-- **Python** 3.14+
+- **requests** 2.31.0 - Biblioteca HTTP para fazer requisições
+- **pytest** 7.4.3 - Framework de testes para Python
+- **Python** 3.12+
 
 ## 🛠️ Instalação
 
@@ -251,7 +252,7 @@ task-flask/
 - [ ] Integração com banco de dados (SQLite/PostgreSQL)
 - [ ] Autenticação e autorização
 - [ ] Validação de dados mais robusta
-- [ ] Testes automatizados
+- [x] Testes automatizados (pytest)
 - [ ] Documentação com Swagger/OpenAPI
 - [ ] Paginação para listagem de tarefas
 - [ ] Filtros e busca de tarefas
